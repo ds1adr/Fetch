@@ -33,13 +33,13 @@ extension APIRouterProtocol {
         urlComponents.scheme = APIConstants.scheme
         urlComponents.host = host
         urlComponents.path = path
+        urlComponents.queryItems = params.map({ (key, value) in
+            URLQueryItem(name: key, value: String(describing: value))
+        })
         
         guard let url = urlComponents.url else { throw NetworkError.invalidURL }
         
         var urlRequest = URLRequest(url: url)
-        if !params.isEmpty {
-            urlRequest.httpBody = try JSONSerialization.data(withJSONObject: params)
-        }
         
         return urlRequest
     }
